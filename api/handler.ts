@@ -9,5 +9,6 @@ export default function handler(
     query: request.query,
     cookies: request.cookies,
     env: process.env.TEST_SECRET,
+    something_else: `Hi ${process.env.LANG}, ${process.env.SHELL}, ${process.env.TEST_SECRET}`
   });
 }
