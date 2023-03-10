@@ -1,0 +1,23 @@
+{
+  "name": "dumb-trivia",
+  "version": "1.0.0",
+  "description": "#### Site supporting group trivia, e.g. making questions, forming groups, and answering questions collaboratively.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonxu123/dumb-trivia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasonxu123/dumb-trivia/issues"
+  },
+  "homepage": "https://github.com/jasonxu123/dumb-trivia#readme",
+  "dependencies": {
+    "vercel": "^28.16.15"
+  }
+}
