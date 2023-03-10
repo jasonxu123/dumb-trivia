@@ -1,3 +1,3 @@
 # Dumb Trivia
 
-### Site for forming groups of trivia.
+#### Site supporting group trivia, e.g. making questions, forming groups, and answering questions collaboratively.
