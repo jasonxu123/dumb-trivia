@@ -1,4 +1,6 @@
 from flask import Blueprint
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from markupsafe import escape
 
 api_routes = Blueprint('some_name', __name__)
@@ -6,7 +8,9 @@ api_routes = Blueprint('some_name', __name__)
 
 @api_routes.route('/')
 def home():
-    return 'Hello to the donut'
+    now_str = datetime.now(ZoneInfo('US/Pacific')
+                           ).isoformat(sep=' ', timespec='seconds')
+    return f'Hello at this Pacific time: {now_str}'
 
 
 @api_routes.route('/about')

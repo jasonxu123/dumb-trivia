@@ -15,9 +15,9 @@ SA_HOME_FOLDER = '1LjGx6741JfmmyqhZ4RLonT7HWmvuzTmY'
 TEST_SHEET_ID = '1yqd34HMjq4oHJfQK2X6JXu1LPSU7UPPEiNKYEjxaQl4'
 NEW_TAB_NAMES = ['tab 1', 'Programmatic Tab']
 TEST_VALUES = [
-    ['Answer 1', 98.76, '1/1/2023'],
-    ['Answer 2', 'chicken\n| bird', '$101.85'],
-    ['Answer 3', 5, 'false'],
+    ['Answer 1', '\'98.76', '1/1/2023'],
+    ['Answer 2', 'chicken\n| bird', '\'$101.85\''],
+    ['Answer 3', 5, 'False'],
     ['Answer 4', '"quotes here"', True],
     ['Answer 5', 'test@gmail.com', 'https://www.google.com'],
 ]
