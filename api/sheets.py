@@ -31,7 +31,7 @@ sheets_service = build('sheets', 'v4', credentials=all_creds)
 drive_service = build('drive', 'v3', credentials=all_creds)
 
 
-def create_folder(folder_name):
+def _create_folder(folder_name):
     file_metadata = {
         'name': folder_name,
         'mimeType': 'application/vnd.google-apps.folder',
@@ -41,7 +41,7 @@ def create_folder(folder_name):
     return folder['id']
 
 
-def share_folder(fileId, email):
+def _share_folder(fileId, email):
     """NOTE: sharing the root Drive, like `fileId='root'` or using the root Drive ID, is not allowed."""
     new_permission = {
         'type': 'user',
@@ -56,7 +56,7 @@ def share_folder(fileId, email):
     print(f"Permission ID: {response.get('id')}")
 
 
-def get_drive_permissions():
+def _get_drive_permissions():
     info = drive_service.about().get(fields='*').execute()
     print(info['user'])
     # about = drive_service.files().get(fileId='root').execute()
@@ -67,14 +67,14 @@ def get_drive_permissions():
     # print(response['permissions'])
 
 
-def find_sheets(query: str):
+def _find_sheets(query: str):
     response = drive_service.files().list(q=query, fields='files(id)').execute()
     file_ids = [obj['id'] for obj in response['files']]
     print(file_ids)
     return file_ids
 
 
-def read_sheet(sheet_id: str, tab_name=NEW_TAB_NAMES[0], cell_range='A1:Z1000'):
+def _read_sheet(sheet_id: str, tab_name=NEW_TAB_NAMES[0], cell_range='A1:Z1000'):
     response = sheets_service.spreadsheets().values().get(
         spreadsheetId=sheet_id,
         range=f'{tab_name}!{cell_range}',
@@ -87,7 +87,7 @@ def read_sheet(sheet_id: str, tab_name=NEW_TAB_NAMES[0], cell_range='A1:Z1000'):
             print(row)
 
 
-def create_sheet_if_new(title: str, parent_folder_id=SA_HOME_FOLDER) -> Tuple[str, bool]:
+def _create_sheet_if_new(title: str, parent_folder_id=SA_HOME_FOLDER) -> Tuple[str, bool]:
     """
     Creates a new Google Spreadsheet (i.e. an entirely new file). If a sheet exists in the same
     location with the same name, just return that instead.
@@ -120,25 +120,44 @@ def create_sheet_if_new(title: str, parent_folder_id=SA_HOME_FOLDER) -> Tuple[st
     return response['id'], True
 
 
-def create_tabs(sheet_id: str, tab_names: List[str]):
-    """Adds new tabs to an existing Google Sheet (officially, this is what a "sheet" is.)"""
-    make_tab_body = {
-        'requests': [
-            {
-                'addSheet': {
-                    'properties': {
-                        'title': tab_name,
+def _create_tabs(sheet_id: str, tab_names: List[str]):
+    """
+    Adds new tabs to an existing Google Sheet (officially, a tab is what a "sheet" is).
+    Don't try to create any of the tabs that are already present.
+
+    Args:
+        sheet_id: str
+        tab_names: list of names of tabs to add
+    Returns:
+        Dictionary with fields:
+            existing: list of tab names already in the sheet
+            added: rest of the tab names from input list, that were newly added
+    """
+    curr_sheet = sheets_service.spreadsheets().get(
+        spreadsheetId=sheet_id, fields='sheets(properties.title)'
+    ).execute()
+    tabs_to_have = set(tab_names)
+    curr_tabs = set([sheet['properties']['title']
+                     for sheet in curr_sheet['sheets']])
+    tabs_to_add = tabs_to_have - curr_tabs
+    if len(tabs_to_add):
+        make_tab_body = {
+            'requests': [
+                {
+                    'addSheet': {
+                        'properties': {
+                            'title': tab_name,
+                        }
                     }
                 }
-            }
-            for tab_name in tab_names
-        ]
-    }
-    sheets_service.spreadsheets().batchUpdate(
-        spreadsheetId=sheet_id,
-        body=make_tab_body,
-    ).execute()
-    return tab_names
+                for tab_name in tabs_to_add
+            ]
+        }
+        sheets_service.spreadsheets().batchUpdate(
+            spreadsheetId=sheet_id,
+            body=make_tab_body,
+        ).execute()
+    return {'existing': list(curr_tabs), 'added': list(tabs_to_add)}
 
 
 def number_to_letter_col(col: int) -> str:
@@ -152,7 +171,7 @@ def number_to_letter_col(col: int) -> str:
     return letter_col
 
 
-def update_cells(sheet_id: str, tab_name: str, start_row: int, start_col: int, values: List[List[Any]]):
+def _update_cells(sheet_id: str, tab_name: str, start_row: int, start_col: int, values: List[List[Any]]):
     # TODO: `values` will need to be created based on answer sheet format,
     # i.e. to know where answer to each question should go in sheet.
     """
@@ -160,7 +179,7 @@ def update_cells(sheet_id: str, tab_name: str, start_row: int, start_col: int, v
 
     Args:
         sheet_id: Spreadsheet to update
-        tab_name: Tab to update in spreadsheet, used as part of range
+        tab_name: Tab to add into spreadsheet, used as part of range
         start_row: 1-indexed number of top row to update
         start_col: 1-indexed number of left-most column to update
         values: 2D array of values to put into sheet
@@ -180,25 +199,25 @@ def update_cells(sheet_id: str, tab_name: str, start_row: int, start_col: int, v
     print(f'{result["updatedCells"]} cells updated.')
 
 
-def delete_sheet(sheet_id: str):
+def _delete_sheet(sheet_id: str):
     """DANGEROUS."""
     drive_service.files().delete(fileId=sheet_id).execute()
 
 
 def test_sequence():
     try:
-        # new_id, new_sheet = create_sheet_if_new('another sheet')
-        # print(new_id, new_sheet)
-        # create_tabs(new_id, NEW_TAB_NAMES)
-        update_cells(TEST_SHEET_ID, NEW_TAB_NAMES[0], 10, 5, TEST_VALUES)
-        read_sheet(TEST_SHEET_ID)
+        new_id, new_sheet = _create_sheet_if_new('another sheet')
+        print(new_id, new_sheet)
+        print(_create_tabs(new_id, NEW_TAB_NAMES + ['yet another']))
+        # _update_cells(TEST_SHEET_ID, NEW_TAB_NAMES[0], 10, 5, TEST_VALUES)
+        # _read_sheet(TEST_SHEET_ID)
 
-        # delete_sheet(new_id)
+        # _delete_sheet(new_id)
 
     except HttpError as error:
-        print(f"HTTP error occurred: {error}")
+        print(f"HTTP error occurred with code {error.status_code}: {error}")
     except Exception as error:
         print(f"A generic exception occurred: {repr(error)}")
 
 
-test_sequence()
+# test_sequence()
