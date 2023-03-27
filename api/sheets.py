@@ -1,15 +1,16 @@
 # will need this for Vercel
-# from dotenv import load_dotenv
-# import os
+from dotenv import load_dotenv
+import os
 from typing import List, Tuple, Any
+import json
+import base64
+
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # from online docs
 GOOGLE_SPREADSHEET_FILE_TYPE = 'application/vnd.google-apps.spreadsheet'
-
-CREDS_FILE = '/Users/jasonxu/dumb-trivia/account1-dumb-trivia-321.json'
 
 SA_HOME_FOLDER = '1LjGx6741JfmmyqhZ4RLonT7HWmvuzTmY'
 TEST_SHEET_ID = '1yqd34HMjq4oHJfQK2X6JXu1LPSU7UPPEiNKYEjxaQl4'
@@ -22,8 +23,14 @@ TEST_VALUES = [
     ['Answer 5', 'test@gmail.com', 'https://www.google.com'],
 ]
 
-all_creds = service_account.Credentials.from_service_account_file(
-    CREDS_FILE,
+load_dotenv()
+# encode and decode to ASCII just turns strings into bytes and vice versa
+encoded_creds = os.environ['GOOGLE_API_CREDS'].encode('ascii')
+creds_json_str = base64.b64decode(encoded_creds).decode('ascii')
+
+service_account_info = json.loads(creds_json_str)
+all_creds = service_account.Credentials.from_service_account_info(
+    service_account_info,
     scopes=['https://www.googleapis.com/auth/spreadsheets',
             'https://www.googleapis.com/auth/drive']
 )
