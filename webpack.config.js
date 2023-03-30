@@ -2,13 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-module.exports = {
+module.exports = (env) => ({
   entry: path.resolve(__dirname, 'src', 'index.tsx'),
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
-  mode: 'development',
+  mode: env.env, // either 'development' or 'production', based on package.json script
   module: {
     rules: [
       {
@@ -50,4 +50,4 @@ module.exports = {
     compress: true,
     open: true,
   },
-};
+});
