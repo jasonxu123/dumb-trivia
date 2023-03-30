@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "noEmit": true /* Do not emit outputs. */,
+
+    "strict": true /* Enable all strict type-checking options. */,
+    "allowUnusedLabels": false,
+    "noFallthroughCasesInSwitch": false,
+
+    "target": "ES2022" /* Specify ECMAScript target version */,
+
+    "module": "ESNext" /* Specify module code generation */,
+    "moduleResolution": "node" /* Specify module resolution strategy */,
+
+    "lib": [
+      "DOM",
+      "ESNext"
+    ] /* Specify library files to be included in the compilation. */,
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
+    "jsx": "react-jsx" /* Specify JSX code generation */,
+
+    "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+
+    "resolveJsonModule": true,
+
+    "allowJs": true /* Allow javascript files to be compiled */,
+    "checkJs": true /* Report errors in .js files */
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
