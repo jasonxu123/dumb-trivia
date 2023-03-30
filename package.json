@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack serve --config webpack.config.js --env env=development",
     "build-prod": "webpack --config webpack.config.js --env env=production",
+    "predeploy": "npm run build-prod",
     "deploy": "gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
