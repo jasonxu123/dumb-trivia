@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/jasonxu123/dumb-trivia/issues"
   },
-  "homepage": "https://github.com/jasonxu123/dumb-trivia#readme",
+  "homepage": "https://github.com/jasonxu123/dumb-trivia",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
