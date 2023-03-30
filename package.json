@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack serve --config webpack.config.js --env env=development",
     "build-prod": "webpack --config webpack.config.js --env env=production",
+    "deploy": "gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "babel-loader": "^9.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.3",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.2",
     "typescript": "^5.0.2",
