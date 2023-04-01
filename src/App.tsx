@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 const API_DOMAIN =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://dumb-trivia.vercel.app/';
+    : 'https://dumb-trivia.vercel.app';
 
 const GlobalWrapper = styled('div')(
   ({ theme }) => `
