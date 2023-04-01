@@ -12,7 +12,7 @@ api_routes = Blueprint('some_name', __name__)
 def home():
     now_str = datetime.now(ZoneInfo('US/Pacific')
                            ).isoformat(sep=' ', timespec='seconds')
-    return f'Hello at this Pacific time: {now_str}'
+    return {'message': f'Hello at this Pacific time: {now_str}'}
 
 
 @api_routes.post('/test/create-sheet')
