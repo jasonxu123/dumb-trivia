@@ -1,8 +1,11 @@
 import { Button, Icon, styled } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 
-// TODO: use process.env.NODE_ENV for production or dev API routes
+const API_DOMAIN =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://dumb-trivia.vercel.app/';
 
 const GlobalWrapper = styled('div')(
   ({ theme }) => `
@@ -19,17 +22,26 @@ const ButtonRow = styled('div')(`
   align-items: center;
 `);
 
-export const App = () => (
-  <GlobalWrapper>
-    <Box sx={{ color: 'text.primary', fontSize: 34, fontWeight: 'medium' }}>
-      Test that sheets work
-    </Box>
-    <ButtonRow>
-      <Icon>star</Icon>
-      <Button variant="contained" disableElevation>
-        Test the thing
-      </Button>
-    </ButtonRow>
-    <div>{process.env.NODE_ENV}</div>
-  </GlobalWrapper>
-);
+export const App = () => {
+  const [testMsg, setTestMsg] = useState('');
+  const testApiRead = async () => {
+    const resp = await fetch(API_DOMAIN + '/api/hello');
+    const result = await resp.json();
+    setTestMsg(result['message']);
+  };
+  return (
+    <GlobalWrapper>
+      <Box sx={{ color: 'text.primary', fontSize: 34, fontWeight: 'medium' }}>
+        Test that sheets work
+      </Box>
+      <ButtonRow>
+        <Icon>star</Icon>
+        <Button variant="contained" disableElevation onClick={testApiRead}>
+          Test the thing
+        </Button>
+        {testMsg && <div>{testMsg}</div>}
+      </ButtonRow>
+      <div>{process.env.NODE_ENV}</div>
+    </GlobalWrapper>
+  );
+};
