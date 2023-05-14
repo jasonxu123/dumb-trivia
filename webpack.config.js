@@ -7,7 +7,6 @@ module.exports = (env) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/',
   },
   mode: env.env, // either 'development' or 'production', based on package.json script
   module: {
@@ -41,6 +40,7 @@ module.exports = (env) => ({
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
+      publicPath: '/',
     }),
     new CleanWebpackPlugin(),
   ],
