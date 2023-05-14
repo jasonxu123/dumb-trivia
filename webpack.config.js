@@ -49,5 +49,6 @@ module.exports = (env) => ({
     hot: 'only',
     compress: true,
     open: true,
+    historyApiFallback: true,
   },
 });
