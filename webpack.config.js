@@ -42,6 +42,11 @@ module.exports = (env) => ({
       template: path.resolve(__dirname, './src/index.html'),
       // publicPath: '/',
     }),
+    new HtmlWebpackPlugin({
+      filename: '404.html',
+      template: path.resolve(__dirname, './src/404.html'),
+      inject: false, // This can be used to prevent adding bundle.js to 404.html
+    }),
     new CleanWebpackPlugin(),
   ],
   devServer: {
@@ -50,6 +55,6 @@ module.exports = (env) => ({
     hot: 'only',
     compress: true,
     open: true,
-    // historyApiFallback: true,
+    historyApiFallback: true,
   },
 });
