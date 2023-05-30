@@ -29,7 +29,7 @@ const TestPage = (props: TestPageProps) => {
       <ButtonRow>
         <Icon>star</Icon>
         <Button variant="contained" disableElevation onClick={testApiRead}>
-          Test the thing
+          Test a button
         </Button>
         {testMsg && <div>{testMsg}</div>}
       </ButtonRow>
