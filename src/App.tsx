@@ -6,6 +6,8 @@ const API_DOMAIN =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
     : 'https://dumb-trivia.vercel.app';
+const BASE_ROUTE =
+  process.env.NODE_ENV === 'development' ? '/' : '/dumb-trivia';
 
 const GlobalWrapper = styled('div')(
   ({ theme }) => `
@@ -16,9 +18,12 @@ const GlobalWrapper = styled('div')(
 
 export const App = () => (
   <GlobalWrapper>
-    <Router>
+    <Router basename={BASE_ROUTE}>
       <Routes>
-        <Route path="/" element={<div>Yay, a blank page.</div>} />
+        <Route
+          path="/"
+          element={<div>Yay, a blank page at route "{BASE_ROUTE}".</div>}
+        />
         <Route path="test" element={<TestPage apiDomain={API_DOMAIN} />} />
       </Routes>
     </Router>

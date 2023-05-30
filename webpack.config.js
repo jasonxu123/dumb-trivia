@@ -40,7 +40,7 @@ module.exports = (env) => ({
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
-      publicPath: '/',
+      // publicPath: '/',
     }),
     new CleanWebpackPlugin(),
   ],
@@ -50,6 +50,6 @@ module.exports = (env) => ({
     hot: 'only',
     compress: true,
     open: true,
-    historyApiFallback: true,
+    // historyApiFallback: true,
   },
 });
